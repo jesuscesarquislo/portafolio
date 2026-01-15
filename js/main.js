@@ -1,38 +1,36 @@
-// HERO mouse follow
-const heroImage = document.getElementById("heroImage");
+/* HERO PARALLAX */
+const hero = document.querySelector('.hero-image');
 
-document.addEventListener("mousemove", (e) => {
-  const x = (window.innerWidth / 2 - e.clientX) / 30;
-  const y = (window.innerHeight / 2 - e.clientY) / 30;
-  heroImage.style.transform = `translate(${x}px, ${y}px)`;
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 40;
+  const y = (e.clientY / window.innerHeight - 0.5) * 40;
+  hero.style.transform = `translate(${x - 20}%, ${y - 20}%)`;
 });
 
-// MODAL
-const modal = document.getElementById("modal");
-const modalTitle = document.getElementById("modalTitle");
-const modalImage = document.getElementById("modalImage");
-const modalText = document.getElementById("modalText");
-const modalVideo = document.getElementById("modalVideo");
-const closeModal = document.getElementById("closeModal");
+/* PROYECTOS PREVIEW */
+const cards = document.querySelectorAll('.project-card');
+const preview = document.getElementById('previewImage');
 
-document.querySelectorAll(".card").forEach(card => {
-  card.addEventListener("click", () => {
-    modalTitle.textContent = card.dataset.title;
-    modalText.textContent = card.dataset.text;
-    modalImage.src = card.dataset.image;
-    modalVideo.src = card.dataset.video || "";
-    modal.style.display = "flex";
+cards.forEach(card => {
+  card.addEventListener('mousemove', e => {
+    preview.style.display = 'block';
+    preview.style.left = e.pageX + 20 + 'px';
+    preview.style.top = e.pageY + 20 + 'px';
+    preview.style.backgroundImage = `url(${card.dataset.img})`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    preview.style.display = 'none';
   });
 });
 
-closeModal.addEventListener("click", () => {
-  modal.style.display = "none";
-  modalVideo.src = "";
-});
+/* SOBRE MI SCROLL */
+const words = document.querySelectorAll('.highlight span');
 
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-    modalVideo.src = "";
-  }
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  words.forEach((word, i) => {
+    const trigger = 800 + i * 150;
+    word.style.opacity = scrollY > trigger ? '1' : '0.2';
+  });
 });
